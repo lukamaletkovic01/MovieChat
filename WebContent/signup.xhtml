@@ -1,0 +1,149 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+<h:head>
+	<title>MovieChat – Discuss Movies</title>
+	<link href="./css/styles.css" rel="stylesheet" type="text/css"/>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"/>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
+  	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  	<script src="./js/functions.js"></script>
+  	<style>
+  		.clientinput{
+  			border-radius: 4px;
+  			border-color: grey; 
+  			border-width: 2px;
+  			margin: 6px;
+  			
+  		}
+  		.clientinput:focus{
+  			border-color: black;
+  		}
+  		.adminbutton{
+	
+			background-color: #555555;border: none;
+		  color: #e7e7e7;
+		  padding: 11px 28px;
+		  text-align: center;
+		  text-decoration: none;
+		  display: inline-block;
+		  font-size: 12px;
+		  margin: 4px 2px;
+		  border-radius: 4px;
+		}	
+		.adminbutton:hover{
+			background-color: #3d3d3d
+		}
+  		
+  	</style>
+  	
+</h:head>
+<h:body style="min-height: 100vh; background-color: #e9e9e9;">
+	<div id="container" style="background-color: white; margin: 0 auto; width:1300px;">
+	<nav style="margin: 0 auto; width:1300px;" class="navbar navbar-inverse">
+	  <div class="container-fluid">
+	    <div class="navbar-header">
+	      <a class="navbar-brand" href="index.jsf">MovieChat</a>
+	    </div>
+	    
+	     <h:form class="navbar-form navbar-left">
+		  <div class="input-group">
+		  	<h:inputText class="form-control" style="width: 300px" value="#{movieRecords.searchQuery}"></h:inputText>
+		    <!-- <input type="text" class="form-control" placeholder="Search" style="width: 300px"></input>  -->
+		    <div class="input-group-btn">
+		    	<h:commandLink action="#{movieRecords.search()}" class="btn btn-default">
+		    		<i class="glyphicon glyphicon-search"></i>
+		    	</h:commandLink>
+		        
+		    </div>
+		  </div>
+		</h:form> 
+		
+		<c:choose>
+		    <c:when test="#{user.isLogged()}">
+		     <ul class="nav navbar-nav navbar-right">
+		     <li><i class="fa fa-question-circle" onclick="showHelp()" style="font-size:30px;color: grey;margin-top:8px; margin-right: 40px"></i></li>
+		      <li class="dropdown">
+		        <a class="dropdown-toggle" data-toggle="dropdown" href="#">#{user.username}
+		        <span class="caret"></span></a>
+		        <ul class="dropdown-menu">
+		          <h:form>
+		         	<li><h:commandButton class="adminbutton" action="#{user.changePassword()}" value="Change password"></h:commandButton></li>
+		        	<li><h:commandButton class="adminbutton" action="#{user.logout()}" value="Logout"></h:commandButton></li>
+		          </h:form>
+		        </ul>
+		      </li>
+		    </ul>
+		    </c:when>
+		    <c:otherwise>
+		        <ul class="nav navbar-nav navbar-right">
+		        <li><i class="fa fa-question-circle" onclick="showHelp()" style="font-size:30px;color: grey;margin-top:8px; margin-right: 40px"></i></li>
+			      <li><a href="signup.jsf"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+			      <li><a href="login.jsf"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+			    </ul>
+		    </c:otherwise>
+		</c:choose>
+	    
+	  </div>
+	</nav>
+	<div id="main" style="margin: 0 auto; width:1300px; background-color: white; text-align: center; padding-left: 100px; padding-right: 100px;">
+	<br></br>
+	<h3>Sign Up</h3>
+	<br></br>
+	<h:form>
+		<table style="margin: 0 auto;">
+			<tr>
+				<td>Email: </td>
+				<td><h:inputText class="clientinput" id="email" value="#{user.email}" binding="#{user.email_component}" required="true" requiredMessage="Email is required" validatorMessage="Email is not in correct format">
+					<f:validateLength minimum="5" maximum="50" />
+					<f:validateRegex pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$"/>
+				</h:inputText></td>
+			</tr>
+			<tr>
+				<td>Username: </td>
+				<td><h:inputText class="clientinput" id="username" value="#{user.username}" binding="#{user.username_component}" required="true" requiredMessage="Username is required" validatorMessage="Username must contain at least 5 characters">
+					<f:validateLength minimum="5" maximum="50" />
+				</h:inputText></td>
+			</tr>
+			<tr>
+				<td>Password: </td>
+				<td><h:inputSecret class="clientinput" id="password" value="#{user.password}" binding="#{user.password_component}" required="true" requiredMessage="Password is required" validatorMessage="Password must contain at least 5 characters">
+					<f:validateLength minimum="5" maximum="50" />	
+				</h:inputSecret></td>
+			</tr>
+			<tr>
+				<td>Confirm Password: </td>
+				<td><h:inputSecret class="clientinput" id="confirm_password" value="#{user.confirm_password}" required="true" requiredMessage="Confirm password is required">
+				</h:inputSecret></td>
+			</tr>
+		</table>
+		<br></br>
+		<h:commandButton class="adminbutton" action="#{user.signup()}" value="Sign Up"></h:commandButton>
+	</h:form>
+	<br></br>
+	Existing user? <a href="login.jsf">Login here</a>
+	<br></br><br></br>
+	
+	<h:message for="email" style="color:red"/><br></br>
+	<h:message for="username" style="color:red"/><br></br>
+	<h:message for="password" style="color:red"/><br></br>
+	<h:message for="confirm_password" style="color:red"/><br></br>
+	<br></br>
+	</div>
+	<footer style="margin: 0 auto; width:1300px;">
+
+	
+	  <!-- Copyright -->
+	  <div class="footer-copyright text-center py-3" style="color: grey">© 2022 Copyright:
+	    <a href="index.jsf"> MovieChat.com</a>
+	  </div>
+	  <!-- Copyright -->
+		<br></br>
+	</footer>
+	</div>
+	
+</h:body></html>

@@ -1,0 +1,19 @@
+(1) Podesiti Java Build Path za Server Runtime (tomcat) i JRE
+
+(2) Dodati JAR fajlove iz foldera WebContent/WEB-INF/lib u Build Path
+
+(3) Promeniti ime baze u konekcionom url-u u fajlu src/connection/IProvider.java ili napraviti bazu sa imenom MovieChatDb
+
+(4) Promeniti user i password za mysql u fajlu src/connection/IProvider.java
+
+(5) Izvrsiti skriptu script.sql
+
+
+Admin nalog:
+	Username: admin
+	Password: admin1
+	
+Obicni nalog:
+	Username: korisnik1
+	Password: korisnik1
+	
